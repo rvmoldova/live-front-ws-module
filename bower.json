@@ -1,7 +1,7 @@
 {
   "name": "live-front-ws-module",
   "description": "Module what links to WS api",
-  "main": "live_modules.min.js",
+  "main": "live_module.min.js",
   "authors": [
     "RV"
   ],

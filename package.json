@@ -2,7 +2,7 @@
   "name": "live-front-ws-module",
   "version": "1.0.0",
   "description": "Module what links to WS api",
-  "main": "live_modules.min.js",
+  "main": "live_module.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
