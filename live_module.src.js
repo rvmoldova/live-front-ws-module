@@ -2,13 +2,13 @@
 
 class LiveModule {
   constructor(url, options) {
-    this._reconnect = true;
+    this._reconnect1 = true;
     this._debug = false;
     this._cb = {};
     this._url = url;
     if (typeof options == 'object') {
       if (typeof options.reconnect != undefined) {
-        this._reconnect = options.reconnect ? true : false;
+        this._reconnect = this._reconnect1 = options.reconnect ? true : false;
       }
       if (typeof options.debug != undefined) {
         this._debug = options.debug ? true : false;
@@ -36,13 +36,14 @@ class LiveModule {
   }
 
   _try_reconnect() {
-    if (this._reconnect && this._lastfail) {
+    if (this._reconnect1 && this._lastfail) {
       this.reconnect();
       setTimeout(this._try_reconnect, 1000);
     }
   }
 
   connect() {
+    this._reconnect1 = this._reconnect;
     if (this._socket) {
       this.reconnect();
     } else {
@@ -61,8 +62,12 @@ class LiveModule {
       }
     }
     this._socket.onclose = (ev) => {
-      this._lastfail = true;
-      this._try_reconnect();
+      _super._socket.onopen = null;
+      _super._socket.onclose = null;
+      _super._socket.onerror = null;
+      _super._socket.onmessage = null;
+      _super._lastfail = true;
+      _super._try_reconnect();
       if (_super._debug) {
         console.debug('Disconnected from', _super._url);
         console.debug(ev);
@@ -72,7 +77,7 @@ class LiveModule {
       }
     }
     this._socket.onerror = (ev) => {
-      this._lastfail = true;
+      _super._lastfail = true;
       if (_super._debug) {
         console.debug('Error');
         console.debug(ev);
@@ -104,16 +109,14 @@ class LiveModule {
   }
 
   reconnect() {
-    let temp = this._reconnect;
-    this._reconnect = false;
-    this._socket.close();
+    this.disconnect();
     this.connect();
-    this._reconnect = true;
   }
 
   disconnect() {
-    this._reconnect = false;
+    this._reconnect1 = false;
     this._socket.close();
+    this._socket = null;
   }
 
   auth(token) {
