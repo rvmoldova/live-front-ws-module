@@ -44,9 +44,11 @@ class LiveModule {
 
   connect() {
     if (this._socket) {
-      this._socket.close();
+      this.reconnect();
+    } else {
+      this._socket = new WebSocket(this._url);
     }
-    this._socket = new WebSocket(this._url);
+    this._lastfail = false;
     var _super = this;
     this._socket.onopen = (ev) => {
       this._lastfail = false;
@@ -102,8 +104,11 @@ class LiveModule {
   }
 
   reconnect() {
+    let temp = this._reconnect;
+    this._reconnect = false;
     this._socket.close();
     this.connect();
+    this._reconnect = true;
   }
 
   disconnect() {
