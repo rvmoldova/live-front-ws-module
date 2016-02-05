@@ -1,6 +1,6 @@
 {
   "name": "live-front-ws-module",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Module what links to WS api",
   "main": "live_module.min.js",
   "scripts": {
