@@ -43,6 +43,9 @@ class LiveModule {
   }
 
   connect() {
+    if (this._socket) {
+      this._socket.close();
+    }
     this._socket = new WebSocket(this._url);
     var _super = this;
     this._socket.onopen = (ev) => {
