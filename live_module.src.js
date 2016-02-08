@@ -137,7 +137,7 @@ class LiveModule {
 
   unsubscribe(channel) {
     this._socket.send(JSON.stringify({
-      subscribe: channel
+      unsubscribe: channel
     }));
     this._cb[channel] = null;
   }
